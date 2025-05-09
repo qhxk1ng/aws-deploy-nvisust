@@ -34,9 +34,9 @@ def verify(id, pw):
     _conn = connect_to_db()
     _c = _conn.cursor()
 
-    _c.execute("SELECT pw FROM users WHERE id = %s;", (id,))
+    _c.execute("SELECT pw FROM users WHERE id = %s;", (id.upper(),))
     result = _c.fetchone()
-    
+
     if result:
         password_hash = result[0]
         is_verified = password_hash == hashlib.sha256(pw.encode()).hexdigest()
@@ -45,6 +45,7 @@ def verify(id, pw):
 
     _conn.close()
     return is_verified
+
 
 # Delete a user from the database (and associated notes/images)
 def delete_user_from_db(id):
