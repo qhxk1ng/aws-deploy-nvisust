@@ -1,4 +1,4 @@
-import MySQLdb
+import pymysql
 import hashlib
 import datetime
 import os
@@ -11,11 +11,12 @@ MYSQL_DB = os.environ.get('RDS_DB_NAME')
 
 # Establish a connection to the MySQL database
 def connect_to_db():
-    return MySQLdb.connect(
+    return pymysql.connect(
         host=MYSQL_HOST,
         user=MYSQL_USER,
-        passwd=MYSQL_PASSWORD,
-        db=MYSQL_DB
+        password=MYSQL_PASSWORD,
+        database=MYSQL_DB,
+        cursorclass=pymysql.cursors.Cursor  # Optional: Use DictCursor if you want dict results
     )
 
 # List all users from the database
