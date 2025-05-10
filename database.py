@@ -1,4 +1,4 @@
-import pymysql
+import MySQLdb
 import hashlib
 import datetime
 import os
@@ -11,12 +11,11 @@ MYSQL_DB = os.environ.get('RDS_DB_NAME')
 
 # Establish a connection to the MySQL database
 def connect_to_db():
-    return pymysql.connect(
+    return MySQLdb.connect(
         host=MYSQL_HOST,
         user=MYSQL_USER,
-        password=MYSQL_PASSWORD,
-        database=MYSQL_DB,
-        cursorclass=pymysql.cursors.Cursor  # Optional: Use DictCursor if you want dict results
+        passwd=MYSQL_PASSWORD,
+        db=MYSQL_DB
     )
 
 # List all users from the database
@@ -77,7 +76,7 @@ def add_user(id, pw):
 
     hashed_pw = hashlib.sha256(pw.encode()).hexdigest()
     _c.execute("INSERT INTO users (id, pw) VALUES (%s, %s)", (id.upper(), hashed_pw))
-    
+
     _conn.commit()
     _conn.close()
 
@@ -110,7 +109,7 @@ def write_note_into_db(id, note_to_write):
 
     current_timestamp = str(datetime.datetime.now())
     note_id = hashlib.sha1((id.upper() + current_timestamp).encode()).hexdigest()
-    _c.execute("INSERT INTO notes (note_id, timestamp, note, user) VALUES (%s, %s, %s, %s)", 
+    _c.execute("INSERT INTO notes (note_id, timestamp, note, user) VALUES (%s, %s, %s, %s)",
                (note_id, current_timestamp, note_to_write, id.upper()))
 
     _conn.commit()
@@ -130,7 +129,7 @@ def image_upload_record(uid, owner, image_name, timestamp):
     _conn = connect_to_db()
     _c = _conn.cursor()
 
-    _c.execute("INSERT INTO images (uid, owner, name, timestamp) VALUES (%s, %s, %s, %s)", 
+    _c.execute("INSERT INTO images (uid, owner, name, timestamp) VALUES (%s, %s, %s, %s)",
                (uid, owner, image_name, timestamp))
 
     _conn.commit()
