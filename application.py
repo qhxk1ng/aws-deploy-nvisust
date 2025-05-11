@@ -195,7 +195,27 @@ def FUN_add_user():
             return(redirect(url_for("FUN_admin")))
     else:
         return abort(401)
+    
+# Add these error handlers
+@app.errorhandler(DatabaseTimeout)
+def handle_db_timeout(error):
+    app.logger.error("Database timeout occurred")
+    return render_template("error.html", message="Database operation timed out"), 504
 
+@app.errorhandler(MySQLdb.Error)
+def handle_db_error(error):
+    app.logger.error(f"Database error: {str(error)}")
+    return render_template("error.html", message="Database error occurred"), 500
+
+# Add health check endpoint
+@app.route('/health')
+def health_check():
+    try:
+        with db_cursor() as cursor:
+            cursor.execute("SELECT 1")
+            return "OK", 200
+    except Exception as e:
+        return f"Database error: {str(e)}", 500
 
 
 
