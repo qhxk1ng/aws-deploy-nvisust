@@ -4,8 +4,8 @@ import datetime
 import os
 
 # Get MySQL credentials from environment variables (for Elastic Beanstalk)
-MYSQL_HOST = os.environ.get('RDS_HOST')
-MYSQL_USER = os.environ.get('RDS_USER')
+MYSQL_HOST = os.environ.get('RDS_HOSTNAME')
+MYSQL_USER = os.environ.get('RDS_USERNAME')
 MYSQL_PASSWORD = os.environ.get('RDS_PASSWORD')
 MYSQL_DB = os.environ.get('RDS_DB_NAME')
 
