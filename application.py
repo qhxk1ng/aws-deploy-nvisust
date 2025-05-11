@@ -11,6 +11,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config.from_object('config')
+app.config['DEBUG'] = True  # Enable debugging
 
 
 
@@ -75,7 +76,6 @@ def FUN_admin():
         return render_template("admin.html", users = user_table)
     else:
         return abort(401)
-
 
 
 
