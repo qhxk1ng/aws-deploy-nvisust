@@ -144,13 +144,16 @@ def FUN_delete_image(image_uid):
 
 
 
-@app.route("/login", methods = ["POST"])
+@app.route("/login", methods=["POST"])
 def FUN_login():
-    id_submitted = request.form.get("id").upper()
-    if (id_submitted in list_users()) and verify(id_submitted, request.form.get("pw")):
+    id_submitted = request.form.get("id", "").upper()
+    password = request.form.get("pw", "")
+    if (id_submitted in list_users()) and verify(id_submitted, password):
         session['current_user'] = id_submitted
+        return redirect(url_for("FUN_root"))
+    else:
+        return "Login failed. Invalid credentials.", 401  # or re-render login template with error
 
-    return(redirect(url_for("FUN_root")))
 
 @app.route("/logout/")
 def FUN_logout():
