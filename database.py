@@ -34,7 +34,7 @@ def verify(id, pw):
     _conn = connect_to_db()
     _c = _conn.cursor()
 
-    _c.execute("SELECT pw FROM users WHERE id = %s;", (id.upper(),))
+    _c.execute("SELECT password FROM users WHERE id = %s;", (id.upper(),))
     result = _c.fetchone()
 
     if result:
@@ -45,6 +45,7 @@ def verify(id, pw):
 
     _conn.close()
     return is_verified
+
 
 
 # Delete a user from the database (and associated notes/images)
