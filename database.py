@@ -71,12 +71,12 @@ def delete_user_from_db(id):
     _conn.close()
 
 # Add a new user to the database
-def add_user(id, pw):
+def add_user(id, password):
     _conn = connect_to_db()
     _c = _conn.cursor()
 
-    hashed_pw = hashlib.sha256(pw.encode()).hexdigest()
-    _c.execute("INSERT INTO users (id, pw) VALUES (%s, %s)", (id.upper(), hashed_pw))
+    hashed_pw = hashlib.sha256(password.encode()).hexdigest()
+    _c.execute("INSERT INTO users (id, password) VALUES (%s, %s)", (id.upper(), hashed_pw))
 
     _conn.commit()
     _conn.close()
