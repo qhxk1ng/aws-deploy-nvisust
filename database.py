@@ -10,14 +10,16 @@ from contextlib import contextmanager
 from flask import current_app as app
 
 # Database configuration
-dbconfig = {
-    "host": os.environ.get('RDS_HOST'),
-    "user": os.environ.get('RDS_USER'),
-    "password": os.environ.get('RDS_PASSWORD'),
-    "database": os.environ.get('RDS_DB_NAME'),
-    "autocommit": True
-}
-
+def connect_to_db():
+    return MySQLdb.connect(
+        host=os.environ.get('RDS_HOST'),
+        user=os.environ.get('RDS_USER'),
+        passwd=os.environ.get('RDS_PASSWORD'),
+        db=os.environ.get('RDS_DB_NAME'),
+        connect_timeout=5,  # Add connection timeout
+        read_timeout=10,     # Add read timeout
+        write_timeout=10     # Add write timeout
+    )
 # Create connection pool
 try:
     connection_pool = pooling.MySQLConnectionPool(
