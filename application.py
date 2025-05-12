@@ -199,6 +199,32 @@ def FUN_add_user():
     else:
         return abort(401)
     
+@app.route("/signup", methods=["GET", "POST"])
+def FUN_signup():
+    if request.method == "GET":
+        return render_template("signup.html")
+
+    elif request.method == "POST":
+        user_id = request.form.get("id", "").upper()
+        password = request.form.get("password", "")
+
+        if not user_id or not password:
+            flash("Username and password are required.", "danger")
+            return render_template("signup.html")
+
+        if user_id in list_users():
+            flash("Username already exists. Please choose a different one.", "warning")
+            return render_template("signup.html")
+
+        if " " in user_id or "'" in user_id:
+            flash("Username cannot contain spaces or quotes.", "danger")
+            return render_template("signup.html")
+
+        add_user(user_id, password)
+        flash("Sign-up successful. Please log in.", "success")
+        return redirect(url_for("FUN_root"))
+
+    
 
 
 
