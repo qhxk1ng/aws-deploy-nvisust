@@ -144,6 +144,8 @@ def FUN_delete_image(image_uid):
 
 
 
+
+
 @app.route("/login", methods=["POST"])
 def FUN_login():
     id_submitted = request.form.get("id", "").upper()
@@ -194,7 +196,7 @@ def FUN_add_user():
                             [x + y for x,y in zip(["/delete_user/"] * len(user_list), user_list)])
             return(render_template("admin.html", id_to_add_is_invalid = True, users = user_table))
         else:
-            add_user(request.form.get('id'), request.form.get('pw'))
+            add_user(request.form.get('id'), request.form.get('password'))
             return(redirect(url_for("FUN_admin")))
     else:
         return abort(401)
