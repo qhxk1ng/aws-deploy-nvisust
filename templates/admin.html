@@ -1,68 +1,101 @@
-{% extends "layout.html" %}
-{% block page_title %}Admin Dashboard{% endblock %}
-{% block body %}
-    {{ super() }}
-    
-    {# only invoked when failed adding new ID due to duplication #}
-    {% if id_to_add_is_duplicated %}
-    <div class="alert alert-dismissible alert-danger">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Warning!</strong> The account name already exists.
-    </div>
-    {% endif %}
-    
-    {# only invoked when failed adding new ID due to invalid character #}
-    {% if id_to_add_is_invalid %}
-    <div class="alert alert-dismissible alert-danger">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Warning!</strong> The account name is invalid.
-    </div>
-    {% endif %}
+<!DOCTYPE html>
+<html lang="en">
 
-    <div class = "container">
-      <div class="row">
+<head>
+    <meta charset="utf-8">
+    <title>Admin Dashboard</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/sb-admin.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/plugins/morris.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+</head>
 
-        <div class="col-lg-6">
-          <h3>Add Account</h3>
-
-          <form class="form-inline" action="/add_user" method='post'>
-            <div class="form-group">
-              <label for="id">ID</label>
-              <input type="text" class="form-control" name="id">
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">SB Admin</a>
             </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" name="password">
-            </div>
-            <br><br>
-            <button type="submit" class="btn">Submit</button>
-          </form>
-        </div>
+        </nav>
 
-        <div class="col-lg-6">
-              <h3>Manage Existing Accounts</h3>
+        <div id="page-wrapper">
+            <div class="container-fluid">
 
-                <table class="table small">
-                <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>ID</th>
-                      <th>Action</th>
-                    </tr>
-                </thead>
-                {% for number, id, act in users %}
-                        <tr>
-                           <th> {{ number }} </th>
-                           <td> {{ id }} </td>
-                           <td><a href={{act}}>Delete</a></td>
-                        </tr>
-                        
-                {% endfor %}
-                </table>
-        </div>
+                <!-- Page Header -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Admin Dashboard <small>User Management</small></h1>
+                    </div>
+                </div>
 
-      </div>
-    </div>
+                <!-- Alerts -->
+                {% if id_to_add_is_duplicated %}
+                <div class="alert alert-warning">User already exists.</div>
+                {% endif %}
+                {% if id_to_add_is_invalid %}
+                <div class="alert alert-danger">Invalid user ID. No spaces or quotes allowed.</div>
+                {% endif %}
 
+                <!-- Add User Form -->
+                <div class="row">
+                    <div class="col-lg-4">
+                        <form method="post" action="{{ url_for('FUN_add_user') }}">
+                            <div class="form-group">
+                                <label>User ID</label>
+                                <input type="text" class="form-control" name="id" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" name="pw" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add User</button>
+                        </form>
+                    </div>
+                </div>
 
-{% endblock %}
+                <!-- Users Table -->
+                <div class="row" style="margin-top: 30px;">
+                    <div class="col-lg-8">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><i class="fa fa-users"></i> Registered Users</div>
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>User ID</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for index, userid, delete_link in users %}
+                                            <tr>
+                                                <td>{{ index }}</td>
+                                                <td>{{ userid }}</td>
+                                                <td>
+                                                    <a href="{{ delete_link }}" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-trash"></i> Delete
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- /.container-fluid -->
+        </div> <!-- /#page-wrapper -->
+    </div> <!-- /#wrapper -->
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</body>
+
+</html>
