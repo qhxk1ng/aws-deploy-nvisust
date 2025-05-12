@@ -1,26 +1,61 @@
 {% extends "layout.html" %}
 {% block page_title %}Welcome{% endblock %}
+{% block head %}
+    {{ super() }}
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            margin-top: 50px;
+        }
+
+        ul li {
+            padding: 10px 0;
+        }
+
+        .btn-primary {
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     {{ super() }}
 
-    <p>This is a sample project deployed on AWS by Abraham</p>
-    <p></p>
-    <ul>
-        <li>URL Building</li>
-        <li>Authentication with Sessions</li>
-        <li>Template & Template Inheritance</li>
-        <li>Error Handling</li>
-        <li>Integrating with Bootstrap</li>
-        <li>Interaction with Database (SQLite)</li>
-        <li>Invoking static resources</li>
-        <li>Upload files</li>
-    </ul>
+    <div class="container main-container text-center" data-aos="fade-up">
+        <h1 class="display-4 mb-4">Welcome to My AWS Flask App 🚀</h1>
+        <p class="lead">Deployed by <strong>Abraham</strong></p>
 
-    <p>Sign Up button is still in development :) </p>
+        <div class="text-start mt-4" data-aos="fade-right">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">✅ URL Building</li>
+                <li class="list-group-item">✅ Authentication with Sessions</li>
+                <li class="list-group-item">✅ Template & Template Inheritance</li>
+                <li class="list-group-item">✅ Error Handling</li>
+                <li class="list-group-item">✅ Integrating with Bootstrap</li>
+                <li class="list-group-item">✅ Interaction with Database (SQLite)</li>
+                <li class="list-group-item">✅ Invoking static resources</li>
+                <li class="list-group-item">✅ Upload files</li>
+            </ul>
+        </div>
 
-    <!-- Sign Up Link -->
-    <div>
-        <a href="/signup" class="btn btn-primary">Sign Up</a>
+        <p class="mt-4 text-muted" data-aos="fade-in">🚧 Sign Up feature is still in development</p>
+
+        <a href="/signup" class="btn btn-primary btn-lg mt-3" data-aos="zoom-in">Sign Up</a>
     </div>
 
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 {% endblock %}
